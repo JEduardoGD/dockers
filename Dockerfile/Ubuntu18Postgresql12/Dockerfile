@@ -5,13 +5,14 @@
 FROM ubuntu:18.04
 
 RUN ln -fs /usr/share/zoneinfo/America/Mexico_City /etc/localtime
-RUN apt-get update -y && apt-get install -y gnupg2 tzdata systemd
+RUN apt-get update -y && apt-get install -y gnupg2 tzdata systemd curl
 RUN dpkg-reconfigure --frontend noninteractive tzdata
 #CMD ["timedatectl", "set-timezone", "America/Mexico_City"]
 
 # Add the PostgreSQL PGP key to verify their Debian packages.
 # It should be the same key as https://www.postgresql.org/media/keys/ACCC4CF8.asc
-RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+#RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+RUN curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
 
 # Add PostgreSQL's repository. It contains the most recent stable release
 #     of PostgreSQL, ``9.3``.
